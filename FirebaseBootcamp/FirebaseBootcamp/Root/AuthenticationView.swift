@@ -14,7 +14,7 @@ struct AuthenticationView: View {
             NavigationLink {
                 EmailSignUpView( isPresented: $isPresented)
             } label: {
-                Text("Email Sign Up")
+                Text("Sign In With Email")
                     .frame(maxWidth:.infinity)
                     .frame(height:55)
                     .bold()
