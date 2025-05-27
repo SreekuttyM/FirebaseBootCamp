@@ -20,8 +20,8 @@ struct AuthenticationView: View {
                     .bold()
                     .background(.blue)
                     .foregroundStyle(.white)
-                    .padding()
                     .cornerRadius(12)
+                    .padding()
             }
             Spacer()
         }
