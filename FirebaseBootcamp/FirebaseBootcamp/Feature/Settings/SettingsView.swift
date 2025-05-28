@@ -8,52 +8,55 @@
 import SwiftUI
 
 struct SettingsView: View {
+    @StateObject var viewModel : SettingsViewModel = SettingsViewModel()
     @Binding var isPresented : Bool
+    
     var body: some View {
         Form {
-            Button {
-                try?  AuthenticationManager.shared.signOut()
-                isPresented = true
-            } label: {
-                Text("LogOut")
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 50)
-            }
-            
-            Button {
-                Task {
-                    do {
-                        try await AuthenticationManager.shared.updatePassword()
-                        isPresented = true
-                    }
-                    catch {
-                        print(error)
-                    }
+            Section  {
+                Button("Sign Out") {
+                    try?  AuthenticationManager.shared.signOut()
+                    isPresented = true
                 }
-            } label: {
-                Text("Update Password")
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 50)
             }
-            
-            Button {
-                Task {
-                    do {
-                        try await AuthenticationManager.shared.resetPassword()
-                        isPresented = true
-                    }
-                    catch {
-                        print(error)
-                    }
-                }
-            } label: {
-                Text("Reset Password")
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 50)
+            if viewModel.providers.contains(.email) {
+                EmailSettingsSection
             }
-            
+        }
+        .onAppear {
+            Task {
+                try await viewModel.fetchProviders()
+            }
         }
         .navigationTitle("Settings")
+    }
+    
+    private var EmailSettingsSection : some View {
+        Section("Email Settings")  {
+            Button("Update Password") {
+                Task {
+                    do {
+                        try await viewModel.changePassword()
+                        isPresented = true
+                    }
+                    catch {
+                        print(error)
+                    }
+                }
+            }
+            
+            Button("Reset Password") {
+                Task {
+                    do {
+                        try await viewModel.resetPassword()
+                        isPresented = true
+                    }
+                    catch {
+                        print(error)
+                    }
+                }
+            }
+        }
     }
 }
 

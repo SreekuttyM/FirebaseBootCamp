@@ -49,7 +49,7 @@ struct EmailSignUpView: View {
                     .frame(maxWidth:.infinity)
                     .frame(height:55)
                     .bold()
-                    .background(.blue)
+                    .background(.accent)
                     .foregroundStyle(.white)
                     .cornerRadius(12)
             }

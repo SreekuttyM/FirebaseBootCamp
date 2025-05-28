@@ -11,8 +11,11 @@ struct RootView: View {
     @State var isPresented : Bool = false
     var body: some View {
         ZStack {
-            SettingsView(isPresented:$isPresented)
+            if(!isPresented) {
+                SettingsView(isPresented:$isPresented)
+            }
         }
+        .tint(.accent)
         .onAppear {
             let user = try? AuthenticationManager.shared.getAuthenticatedUser()
             isPresented = user == nil
